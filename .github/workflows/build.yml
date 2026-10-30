@@ -47,7 +47,8 @@ jobs:
         shell: pwsh
         run: |
           $folder = "dist/win-unpacked"
-          if (!(Test-Path (Join-Path $folder "index.html"))) { throw "Game entry page missing." }
+          # electron-builder packages the HTML and JavaScript inside resources/app.asar.
+          if (!(Test-Path (Join-Path $folder "resources/app.asar"))) { throw "Electron app package missing (resources/app.asar)." }
           if (!(Test-Path (Join-Path $folder "aether.manifest.json"))) { throw "Aether manifest missing." }
           $manifest = Get-Content (Join-Path $folder "aether.manifest.json") -Raw | ConvertFrom-Json
           if ($manifest.aether_public_key -ne "aether_pk_175d5eab667306dd35467140937b2747ed2257ea676705dde730fc8088ae9748") { throw "Aether public key mismatch." }

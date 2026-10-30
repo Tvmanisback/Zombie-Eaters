@@ -1,7 +1,7 @@
 {
   "name": "zombie-eaters",
   "version": "1.0.0",
-  "description": "Zombie Eaters pixel-art arcade brawler",
+  "description": "Zombie Eaters: cartoon pixel-art survival arcade game for Aether",
   "main": "electron/main.cjs",
   "author": "Tvman",
   "license": "UNLICENSED",
@@ -16,8 +16,19 @@
   "build": {
     "appId": "com.tvman.zombieeaters",
     "productName": "Zombie Eaters",
-    "directories": { "output": "dist" },
-    "files": ["index.html", "game.js", "electron/**/*", "package.json"],
-    "win": { "target": ["dir"] }
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "game.js",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "dir"
+      ]
+    }
   }
 }

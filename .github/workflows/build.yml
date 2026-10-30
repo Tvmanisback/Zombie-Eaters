@@ -1,4 +1,4 @@
-name: Build Zombie Eaters for Windows
+name: Build Zombie Eaters for Aether (Windows)
 
 on:
   workflow_dispatch:
@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
       - name: Install dependencies
         run: npm install
       - name: Build Windows game folder
@@ -39,14 +40,23 @@ jobs:
             game_name = "Zombie Eaters"
             platform = "windows"
             entry_exe = $exe.Name
-            aether_public_key = "ADD_YOUR_CURRENT_AETHER_PUBLIC_KEY_HERE"
+            aether_public_key = "aether_pk_175d5eab667306dd35467140937b2747ed2257ea676705dde730fc8088ae9748"
             version = "1.0.0"
           } | ConvertTo-Json
           Set-Content -Path (Join-Path $folder "aether.manifest.json") -Value $manifest -Encoding utf8
+      - name: Verify Aether package
+        shell: pwsh
+        run: |
+          $folder = "dist/win-unpacked"
+          if (!(Test-Path (Join-Path $folder "index.html"))) { throw "Game entry page missing." }
+          if (!(Test-Path (Join-Path $folder "aether.manifest.json"))) { throw "Aether manifest missing." }
+          $manifest = Get-Content (Join-Path $folder "aether.manifest.json") -Raw | ConvertFrom-Json
+          if ($manifest.aether_public_key -ne "aether_pk_175d5eab667306dd35467140937b2747ed2257ea676705dde730fc8088ae9748") { throw "Aether public key mismatch." }
+          if (!(Test-Path (Join-Path $folder $manifest.entry_exe))) { throw "Manifest EXE does not exist." }
       - name: Upload complete game folder
         uses: actions/upload-artifact@v4
         with:
-          name: Zombie-Eaters-Windows-Game-Folder
+          name: Zombie-Eaters-Aether-Windows-Folder
           path: dist/win-unpacked/
           if-no-files-found: error
           retention-days: 30

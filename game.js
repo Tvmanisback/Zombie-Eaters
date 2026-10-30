@@ -17,6 +17,5 @@ function draw(){x.save();if(shake>0){x.translate(rnd(-shake,shake),rnd(-shake,sh
 function loop(t){let dt=Math.min(2,(t-last)/16.67||1);last=t;step(dt);draw();requestAnimationFrame(loop)}
 window.addEventListener('keydown',e=>{let k=e.key.toLowerCase();keys[k]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(k))e.preventDefault();if(k===' '||k==='shift')dash()});window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 $('start').onclick=()=>{$('overlayTitle').innerHTML='ZOMBIE<br>EATERS';$('overlayText').textContent='Outsmart the goofy ghouls, collect glowing energy orbs, and see how many waves you can survive.';$('start').textContent='START SURVIVING';reset()};
-document.querySelectorAll('[data-key]').forEach(b=>{let k=b.dataset.key;b.addEventListener('pointerdown',e=>{e.preventDefault();if(k==='dash'){dash();return}keys[k]=true});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false))});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)Object.keys(keys).forEach(k=>keys[k]=false)});draw();requestAnimationFrame(loop)
 })();
